@@ -3,15 +3,18 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MainPage from '../Pages/MainPage'
 import LoginPage from '../Pages/LoginPage'
 import SignupPage from '../Pages/SignupPage'
+import { Auth } from '../ProtectedRoutes/Auth'
 
 const Router = () => {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path='/'>
-                    <Route path='' Component={MainPage} />
-                    <Route path='signup' Component={SignupPage} />
-                    <Route path='login' Component={LoginPage} />
+                    <Route path='' element={<Auth><MainPage /></Auth>} />
+                    
+                    <Route path='signup' element={ <Auth route={"signup"}><SignupPage /></Auth> } />
+                    <Route path='login' element={ <Auth route={"login"}><LoginPage /></Auth> } />
+                
                 </Route>
             </Routes>
         </BrowserRouter>

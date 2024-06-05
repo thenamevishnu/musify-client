@@ -1,13 +1,20 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import SongList from './SongList'
 import Singers from './Singers'
 import Suggestions from './Suggestions'
 import PlayMusic from './PlayMusic'
 import Treanding from './Trending'
+import { useSelector } from 'react-redux'
+import AddSong from '../Songs/AddSong'
 
 const Main = () => {
+
+    const { account_type } = useSelector(state => state.users)
+    const [isModalOpen, setModalOpen] = useState(false)
+
     return (
         <Fragment>
+            <AddSong isModalOpen={isModalOpen} setModalOpen={ setModalOpen } />
             <div className='mt-20 px-2 md:px-10 pb-20'>
                 <div className='flex flex-col'>
                     <div>
@@ -34,6 +41,13 @@ const Main = () => {
                 </div>
             </div>
             <PlayMusic />
+            {
+                account_type == "singer" && <div onClick={() => {
+                        setModalOpen(true)
+                    }} className='fixed bottom-5 right-5 bg-secondary w-10 h-10 text-white rounded-full text-xl flex justify-center items-center cursor-pointer'>
+                    <i className='fa fa-plus'/>
+                </div>
+            }
         </Fragment>
     )
 }
