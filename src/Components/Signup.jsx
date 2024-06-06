@@ -10,7 +10,7 @@ const Signup = () => {
 
     const [formData, setFormData] = useState({ name: "", username: "", email: "", password: "", confirm_password: "", account_type: "" })
     const [errorMessage, setErrorMessage] = useState("")
-    const submitted = useRef(false)
+    const [clicked, setClicked] = useState(false)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -21,38 +21,37 @@ const Signup = () => {
 
     const handleForm = async (event) => {
         event.preventDefault()
-        if (submitted.current == false) {
-            submitted.current = true
-            for (let key in formData) {
-                if (!formData[key]) {
-                    submitted.current = false
-                    return setErrorMessage(`${key.replace(key[0], key[0].toUpperCase())} is required`)
-                }
+        if (clicked) return;
+        setClicked(true)
+        for (let key in formData) {
+            if (!formData[key]) {
+                setClicked(false)
+                return setErrorMessage(`${key.replace(key[0], key[0].toUpperCase())} is required`)
             }
-            if (formData.password != formData.confirm_password) {
-                submitted.current = false
-                return setErrorMessage(`Password doesn't match`)
-            }
-            resetError()
-            const {confirm_password, ...userData} = formData
-            const response = await userSignup(userData)
-            if (response.token) {
-                setToken(response.token)
-                const {_id, name, username, email, picture, account_type} = getUserFromJwt(response.token)
-                dispatch(updateUser({
-                    id: _id,
-                    name: name,
-                    username: username,
-                    email: email,
-                    picture: picture ? picture : `./user-avatar.jpg`,
-                    account_type: account_type
-                }))
-                submitted.current = false
-                return navigate("/")
-            }
-            submitted.current = false
-            return setErrorMessage(response)
         }
+        if (formData.password != formData.confirm_password) {
+            setClicked(false)
+            return setErrorMessage(`Password doesn't match`)
+        }
+        resetError()
+        const {confirm_password, ...userData} = formData
+        const response = await userSignup(userData)
+        if (response.token) {
+            setToken(response.token)
+            const {_id, name, username, email, picture, account_type} = getUserFromJwt(response.token)
+            dispatch(updateUser({
+                id: _id,
+                name: name,
+                username: username,
+                email: email,
+                picture: picture ? picture : `./user-avatar.jpg`,
+                account_type: account_type
+            }))
+            setClicked(false)
+            return navigate("/")
+        }
+        setClicked(false)
+        return setErrorMessage(response)
     }
     
     return (

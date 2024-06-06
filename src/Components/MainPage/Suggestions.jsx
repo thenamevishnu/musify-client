@@ -1,19 +1,44 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useCallback, useEffect, useState } from 'react'
+import { getRecommendations } from '../../Services/Track'
+import { useDispatch, useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
+import { addList } from '../../Redux/recentSlice'
+import { playingUpdate } from '../../Redux/playingSlice'
+import { getTime } from '../../Utils/helper'
+import { usePlay } from '../../context'
 
 const Suggestions = () => {
 
-    const songs = new Array(10).fill(10).map((_) => {
-        return { image: "https://a10.gaanacdn.com/gn_img/albums/NOXWVRgWkq/OXWVrl1ZWk/size_l.jpg", title: "Thalavattam", duration: "04:53" }
-    })
+    const [recommend, setRecommend] = useState([])
+    const { tags } = useSelector(state => state.playing)
+    const { setPlaying } = usePlay()
+
+    const dispatch = useDispatch()
+    
+    const getRecommend = useCallback(async () => {
+        const res = await getRecommendations(tags)
+        if(!res.recommended) return toast.error(res)
+        setRecommend(res.recommended)
+    }, [tags])
+
+    useEffect(() => {
+        getRecommend()
+    }, [tags])
+
+    const addToRecentPlayed = (item) => {
+        setPlaying(true)
+        dispatch(addList({ list: { trackId: item._id, image: item.thumb || "./no-thumb.jpeg", title: item.title, description: item.description, last_played: getTime() } }))
+        dispatch(playingUpdate({ trackId: item._id }))
+    }
 
     return (
         <Fragment>
             {
-                songs.map((item, index) => {
+                recommend.map((item, index) => {
                     return (
-                        <div className={`mx-3 ${index == 0 && "ms-0"} ${index == songs.length - 1 && "me-0"} text-white cursor-pointer overflow-hidden w-44  rounded-2xl inline-block mx-3 mt-10`} key={index}>
+                        <div onClick={() => addToRecentPlayed(item)} className={`${index == 0 && "ms-0"} ${index == recommend.length - 1 && "me-0"} text-white cursor-pointer overflow-hidden w-44  rounded-t-2xl inline-block mx-3`} key={index}>
                             <div className='overflow-hidden rounded-2xl'>
-                                <img src={item.image} alt="similer" className='rounded-2xl hover:scale-125 transition-all duration-150 ease-linear' />
+                                <img src={item.thumb || "./no-thumb.jpeg"} alt="similer" className='rounded-2xl hover:scale-125 transition-all duration-150 ease-linear' />
                             </div>
                             <div>{item.title}</div>
                             <div>{ item.duration }</div>

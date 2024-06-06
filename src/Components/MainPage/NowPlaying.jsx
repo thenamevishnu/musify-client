@@ -1,20 +1,19 @@
 import React from 'react'
 
-const NowPlaying = ({ isMusicUp }) => {
+const NowPlaying = ({ isMusicUp, track }) => {
+
     return (
-        <div className={`bg-primary w-full md:w-[450px] rounded-2xl fixed bottom-20 flex items-center transition-all duration-200 ease-linear flex-col ${isMusicUp ?  "h-96" : "h-0 opacity-0"}`}>
-            <div className='mt-6'>
-                <img src="https://upload.wikimedia.org/wikipedia/en/f/fd/Nav_-_Bad_Habits.png" alt="bad" className='w-[250px] rounded-xl h-[250px]'/>
-            </div> 
-            <div className='text-white mt-5'>
-                <p>Nav_-_Bad_Habits</p>
-            </div>
-            <div className='w-full md:px-10 px-3 mt-5'>
-                <input type='range' className='w-full'/>
-            </div>
-            <div className='flex justify-between w-full px-3 md:px-10 mt-[-5px]'>
-                <div>10:03</div>
-                <div>05:56</div>
+        <div className={`bg-[#222] fixed top-0 px-2 md:px-10 text-center w-screen h-screen flex overflow-y-scroll items-center transition-all duration-200 ease-linear flex-col ${isMusicUp ?  "opacity-95 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+            <div className={`w-full sm:w-[500px] absolute transition-all duration-200 ease-linear ${isMusicUp ? `bottom-16` :  `bottom-0`}`}>
+                <div className='mt-6 flex justify-center'>
+                    <img src={track.thumb || "./no-thumb.jpeg"} alt={track.title} className='w-[250px] rounded-2xl h-[250px]'/>
+                </div> 
+                <div className='text-white mt-5'>
+                    <p>{track.title}</p>
+                </div>
+                <div className='w-full md:px-10 px-3 mt-5'>
+                    
+                </div>
             </div>
         </div>
     )

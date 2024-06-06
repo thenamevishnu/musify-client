@@ -1,27 +1,42 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addList, removeList } from '../../Redux/recentSlice'
+import { playingUpdate } from '../../Redux/playingSlice'
+import { getTime } from '../../Utils/helper'
+import { usePlay } from '../../context'
 
 const SongList = () => {
 
-    const songs = new Array(5).fill(10).map((_) => {
-        return {image: "https://upload.wikimedia.org/wikipedia/en/f/fd/Nav_-_Bad_Habits.png", title: "Nav_-_Bad_Habits", duration: "05:05"}
-    })
+    const { list } = useSelector(state => state.recent)
+    const { setPlaying } = usePlay()
+
+    const dispatch = useDispatch()
+    
+    const removeRecentPlayed = (trackId) => {
+        dispatch(removeList({trackId: trackId}))
+    }
+
+    const addToRecentPlayed = (item) => {
+        setPlaying(true)
+        dispatch(addList({ list: { trackId: item.trackId, image: item.image, title: item.title, description: item.description, last_played: getTime() } }))
+        dispatch(playingUpdate({ trackId: item.trackId }))
+    }
 
     return (
         <Fragment>
-            <h2 className='text-white my-4 text-2xl'>RECENTLY PLAYED</h2>
             {
-                songs.map((item, index) => {
+                list.map((item, index) => {
                     return (
-                        <div className='bg-primary p-1 rounded-lg my-4 flex items-center gap-3 relative' key={index}>
-                            <div>
-                                <img src={item.image} alt="bad" className='w-14 rounded-full'/>
-                            </div>
-                            <div className='text-white'>
-                                <div>{item.title}</div>
-                                <div>{item.duration} min</div>
-                            </div>
-                            <div className='text-white absolute right-2 w-10 h-10 flex justify-center items-center rounded-full cursor-pointer bg-secondary'>
-                               <i className='fa fa-play'/>
+                        <div key={index} className={`inline-block ${index == 0 && "ms-0"} ${index == list.length - 1 && "me-0"} mx-3`}>
+                            <div className='bg-primary p-1 px-2 group rounded-lg flex items-center gap-3 relative overflow-x-hidden cursor-pointer'>
+                                <div className='relative' onClick={() => addToRecentPlayed(item)}>
+                                    <img src={item.image || "./no-thamb.jpeg"} alt="bad" className='w-14 h-14 rounded-lg' />
+                                    <i className='fa fa-play text-white absolute left-1/2 translate-x-[-50%] top-1/2 translate-y-[-50%] opacity-0 group-hover:opacity-100 transition-all ease-linear duration-150'/>
+                                </div>
+                                <div className='text-white'>
+                                    <div>{item.title?.slice(0,20)}</div>
+                                    <div>Last Played: {item.last_played} <i onClick={() => removeRecentPlayed(item.trackId)} className='fa fa-trash text-sm text-red-400 opacity-60'/></div>
+                                </div>
                             </div>
                         </div>
                     )

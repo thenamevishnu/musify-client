@@ -11,3 +11,43 @@ export const uploadTrack = async (formData) => {
         return err.response?.data?.message || err.message
     }
 }
+
+export const getTrendings = async () => {
+    try {
+        const {status, data}= await api.get("/tracks/trendings")
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}
+
+export const getRecommendations = async (tags) => {
+    try {
+        const { status, data } = await api.get("/tracks/recommend", {
+            params: {
+                tags: tags
+            }
+        })
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}
+
+export const getTrack = async (trackId) => {
+    try {
+        const { status, data } = await api.get(`/tracks/track/${trackId}`)
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}
