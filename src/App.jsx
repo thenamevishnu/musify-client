@@ -6,7 +6,7 @@ const App = () => {
     return (
         <Fragment>
             <Router />
-            <Toaster position="top-right"/>
+            <Toaster position="bottom-right"/>
         </Fragment>
     )
 }

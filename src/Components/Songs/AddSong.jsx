@@ -54,6 +54,12 @@ const AddSong = ({ isModalOpen, setModalOpen }) => {
             setClicked(false)
             return setErrorMessage(response.err)
         }
+        const resData = await uploadToCloud(formData.thumb)
+        if (resData.err) {
+            setClicked(false)
+            return setErrorMessage(resData.err)
+        }
+        formData.thumb = resData.url
         formData.track = response.url
         formData.added = user_id
         formData.tags = formData.tags.split(",").map(item => item.trim())
@@ -78,8 +84,8 @@ const AddSong = ({ isModalOpen, setModalOpen }) => {
                 <div className='flex items-baseline bg-primary rounded-xl px-3 mt-4'>
                     <i className='fa fa-list'/><textarea type="text"  autoComplete='off' value={formData.description} onChange={e=>setFormData({...formData, [e.target.name]: e.target.value})} name='description' placeholder='Description about which film, singer, writter, etc.' className='border-0 bg-primary resize-none h-48  outline-none p-3 px-4 w-full'/>
                 </div>
-                <label htmlFor='file' className='flex items-center gap-3 text-gray-400 cursor-pointer bg-primary rounded-xl px-3 mt-4 p-3'>
-                    <i className='fa fa-upload'/><input id='file' type="file" accept='image/jpg, image/png' name='thumb' onChange={handleThumbChange} className='border-0 hidden bg-primary  outline-none p-3 px-4 w-full'/>
+                <label htmlFor='thumb-file' className='flex items-center gap-3 text-gray-400 cursor-pointer bg-primary rounded-xl px-3 mt-4 p-3'>
+                    <i className='fa fa-upload'/><input id='thumb-file' type="file" accept='image/jpg, image/png, image/jpeg' name='thumb' onChange={handleThumbChange} className='border-0 hidden bg-primary  outline-none p-3 px-4 w-full'/>
                     <div className='overflow-x-hidden whitespace-nowrap'>{ formData.thumb ? formData.thumb.name : `Select a thumnail for this song`}</div>
                 </label>
                 <label htmlFor='file' className='flex items-center gap-3 text-gray-400 cursor-pointer bg-primary rounded-xl px-3 mt-4 p-3'>

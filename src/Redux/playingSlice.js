@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 export const reduxInitialStatePlaying = {
-    trackId: ""
+    trackId: "",
+    tags: []
 }
     
 const playingSlice = createSlice({
@@ -10,6 +11,7 @@ const playingSlice = createSlice({
     reducers: {
         playingUpdate: (state, action) => {
             state.trackId = action.payload.trackId
+            state.tags = action.payload.tags
         }
     }
 })

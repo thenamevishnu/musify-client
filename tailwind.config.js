@@ -8,7 +8,9 @@ export default {
         extend: {
             colors: {
                 primary: "#1d1d1d",
-                secondary: "rgb(76 29 149 / 1)"
+                hover: "#252525",
+                bg: "#2d2d2d",
+                secondary: "crimson"
             }
         },
     },

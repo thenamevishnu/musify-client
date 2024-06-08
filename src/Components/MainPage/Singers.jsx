@@ -21,8 +21,8 @@ const Singers = () => {
             {
                 singers.map((item,index) => {
                     return (
-                        <div className={`mx-3 ${index == 0 && "ms-0"} ${item == singers.length - 1 && "me-0"} relative bg-primary w-24 h-24 rounded-full overflow-hidden inline-block cursor-pointer `} key={index}>
-                            <img src={item.picture || "./user-avatar.jpg"} alt="singer" className='rounded-full aspect-square object-cover shadow hover:scale-125 transition-all duration-150 ease-linear'/>
+                        <div className={`mx-1 shadow shadow-black bg-bg relative hover:bg-hover group w-24 h-24 p-1 rounded-full overflow-hidden inline-block cursor-pointer `} key={index}>
+                            <img src={item.picture || "./user-avatar.jpg"} alt="singer" className='rounded-full aspect-square object-cover shadow hover:scale-110 transition-all duration-150 ease-linear'/>
                             <p className='absolute top-1/2 translate-y-[-50%] left-1/2 translate-x-[-50%] pointer-events-none'>{ item.name }</p>
                         </div>
                     )

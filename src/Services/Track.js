@@ -28,7 +28,7 @@ export const getRecommendations = async (tags) => {
     try {
         const { status, data } = await api.get("/tracks/recommend", {
             params: {
-                tags: tags
+                tags: tags.join(",")
             }
         })
         if (status == 200) {
@@ -40,9 +40,9 @@ export const getRecommendations = async (tags) => {
     }
 }
 
-export const getTrack = async (trackId) => {
+export const getTrack = async (trackId, user_id) => {
     try {
-        const { status, data } = await api.get(`/tracks/track/${trackId}`)
+        const { status, data } = await api.get(`/tracks/track/${trackId}/${user_id}`)
         if (status == 200) {
             return data
         }

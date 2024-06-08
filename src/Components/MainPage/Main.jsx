@@ -1,22 +1,26 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react'
-import SongList from './SongList'
+import React, { Fragment, memo, useCallback, useEffect, useState } from 'react'
 import Singers from './Singers'
 import Suggestions from './Suggestions'
 import PlayMusic from './PlayMusic'
 import Treanding from './Trending'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getTrack } from '../../Services/Track'
 import toast from 'react-hot-toast'
+import RecentlyPlayed from './RecentlyPlayed'
+import { trackUpdate } from '../../Redux/trackSlice'
 
 const Main = () => {
 
     const { trackId } = useSelector(state => state.playing)
-    const [track, setTrack] = useState({})
+    const { id: user_id } = useSelector(state => state.users)
+    const { track } = useSelector(state => state.tracks)
+
+    const dispatch = useDispatch()
     
     const fetchTrack = useCallback(async () => {
-        const res = await getTrack(trackId)
+        const res = await getTrack(trackId, user_id)
         if (!res.track) return toast.error(res)
-        setTrack(res.track)
+        dispatch(trackUpdate({track: res.track}))
     }, [trackId])
 
     useEffect(() => {
@@ -39,7 +43,7 @@ const Main = () => {
                         <h2 className='text-white text-2xl mb-4'>RECENT PLAYS</h2>
                     </div>
                     <div className='overflow-x-scroll whitespace-nowrap'>
-                        <SongList />
+                        <RecentlyPlayed />
                    </div>
                 </div>
                 <div className='flex flex-col mt-10'>
@@ -59,9 +63,9 @@ const Main = () => {
                    </div>
                 </div>
             </div>
-            <PlayMusic track={ track } />
+            <PlayMusic track={track}/>
         </Fragment>
     )
 }
 
-export default Main
+export default memo(Main)

@@ -6,7 +6,8 @@ export const uploadToCloud = async (file) => {
         formData.append("file", file)
         formData.append("upload_preset", import.meta.env.VITE_CLOUD_PRESET)
         formData.append("cloud_name", import.meta.env.VITE_CLOUD_NAME)
-        
+        formData.append("folder", "Tracks")
+
         const { data } = await axios.post(import.meta.env.VITE_CLOUD_API, formData)
         return {url: data.secure_url}
     } catch (err) {
