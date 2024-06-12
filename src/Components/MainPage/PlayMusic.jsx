@@ -25,7 +25,7 @@ const PlayMusic = () => {
         let item = items || track
         if (item._id == track._id) return toast.error("Track is already streaming")
         setPlaying(true)
-        dispatch(addList({ list: { trackId: item._id, tags: item.tags, image: item.thumb || "./no-thumb.jpeg", title: item.title, description: item.description, last_played: getTime() } }))
+        dispatch(addList({ list: { trackId: item._id, tags: item.tags, thumb: item.thumb || "./no-thumb.jpeg", title: item.title, description: item.description, last_played: getTime() } }))
         dispatch(playingUpdate({ trackId: item._id, tags: item.tags  }))
     }
 
@@ -40,7 +40,7 @@ const PlayMusic = () => {
             if (ref) {
                 ref.audio?.current?.removeEventListener("play", () => handlePlays(true))
                 ref.audio?.current?.removeEventListener("pause", () => handlePlays(false))
-                ref.audio.current.removeEventListener("ended", () => handleNextPrev(track.nextTrack))
+                ref.audio?.current?.removeEventListener("ended", () => handleNextPrev(track.nextTrack))
             }
         }
     }, [])
@@ -51,7 +51,9 @@ const PlayMusic = () => {
             audioRef.current.audio.current.pause()
         } 
         return () => {
-            audioRef.current.audio.current.pause()
+            if (audioRef.current) {
+                audioRef.current.audio.current.pause()
+            }
         }
     }, [audioRef.current])
 
@@ -68,7 +70,7 @@ const PlayMusic = () => {
     const backwordTen = () => audioRef.current.audio.current.currentTime -= 10
 
     return (
-        <div className='w-screen fixed px-4 md:px-10 bottom-3 flex justify-center flex-col items-center'>
+        <div className='w-screen fixed px-4 md:px-10 bottom-3 flex justify-center flex-col items-center z-[2]'>
             <NowPlaying forwardTen={forwardTen} backwordTen={backwordTen} isMusicUp={isMusicUp} track={track} audioRef={audioRef} />
             <AudioPlayer ref={audioRef} autoPlay src={track.track} className='bg-[#222] hidden' />
             <div className=' bg-primary shadow shadow-black rounded-xl relative px-5 h-14'>

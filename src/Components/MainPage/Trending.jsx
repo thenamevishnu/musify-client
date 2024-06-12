@@ -6,7 +6,7 @@ import { addList } from '../../Redux/recentSlice'
 import { playingUpdate } from '../../Redux/playingSlice'
 import { getTime } from '../../Utils/helper'
 import { usePlay } from '../../context'
-import { millify } from "millify"
+import TrackCard from '../Cards/TrackCard'
 
 const Trending = () => {
 
@@ -30,8 +30,8 @@ const Trending = () => {
     const addToRecentPlayed = (item) => {
         if (trackId == item._id) return toast.error("Track is already streaming")
         setPlaying(true)
-        dispatch(addList({ list: { trackId: item._id, tags: item.tags, image: item.thumb || "./no-thumb.jpeg", title: item.title, description: item.description, last_played: getTime() } }))
-        dispatch(playingUpdate({ trackId: item._id, tags: item.tags  }))
+        dispatch(addList({ list: { trackId: item._id, tags: item.tags, thumb: item.thumb || "./no-thumb.jpeg", title: item.title, description: item.description, last_played: getTime() } }))
+        dispatch(playingUpdate({ trackId: item._id, tags: item.tags }))
         if (!item.plays?.includes(user_id)) {
             setTrendings((prev) => (prev.map(i => {
                 if (i._id == item._id) {
@@ -43,20 +43,15 @@ const Trending = () => {
             })))
         }
     }
-    
+
     return (
         <Fragment>
             {
                 trendings.map((item, index) => {
                     return (
-                        <div className={`group hover:bg-hover bg-bg p-3 shadow shadow-black text-white cursor-pointer overflow-hidden w-52  rounded-2xl inline-block mx-1 transition-all duration-150 ease-linear`} key={index}>
-                            <div className='overflow-hidden rounded-2xl' onClick={() => addToRecentPlayed(item)}>
-                                <img src={item.thumb || "./no-thumb.jpeg"} alt={ item.title } className='rounded-2xl group-hover:scale-110 transition-all duration-150 ease-linear object-cover aspect-square' />
-                            </div>
-                            <p>Trending #{index+1}</p>
-                            <div>{item.title}</div>
-                            <div>Plays: { millify(item.plays?.length || 0) }</div>
-                        </div>
+                        <Fragment key={index}>
+                            <TrackCard item={item} addToRecentPlayed={addToRecentPlayed} trending={index + 1} />
+                        </Fragment>
                     )
                 })
             }

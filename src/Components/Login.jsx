@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from "react-router-dom"
 import { userLogin } from '../Services/user'
 import { getUserFromJwt } from '../Utils/jwt'
 import { updateUser } from '../Redux/userSlice'
 import { setToken } from '../Utils/localdb'
+import { isEmpty } from '../Utils/validation'
 
 const Login = () => {
 
@@ -23,11 +24,10 @@ const Login = () => {
         event.preventDefault()
         if (clicked) return;
         setClicked(true)
-        for (let key in formData) {
-            if (!formData[key]) {
-                setClicked(false)
-                return setErrorMessage(`${key.replace(key[0], key[0].toUpperCase())} is required`)
-            }
+        const res = isEmpty(formData)
+        if (res != "OK") {
+            setClicked(false)
+            return setErrorMessage(res)
         }
         resetError()
         const response = await userLogin(formData)
@@ -56,11 +56,11 @@ const Login = () => {
                 setFormData({ ...formData, [event.target.name]: event.target.value });
             }}>
                 <h1 className='text-3xl mb-5'>SIGN IN</h1>
-                <div className='flex items-center bg-primary rounded-xl px-3 mt-4'>
-                    <i className='fa fa-at'/><input type="text" autoComplete='off' name='username' defaultValue={formData.username} placeholder='Enter Username' className='border-0 bg-primary  outline-none p-3 px-4 w-full'/>
+                <div className='flex items-center bg-hover rounded-xl px-3 mt-4'>
+                    <i className='fa fa-at'/><input type="text" autoComplete='off' name='username' defaultValue={formData.username} placeholder='Enter Username' className='border-0 bg-hover  outline-none p-3 px-4 w-full'/>
                 </div>
-                <div className='flex items-center bg-primary rounded-xl px-3 mt-4'>
-                    <i className='fa fa-key'/><input type="password" autoComplete='off' name='password' defaultValue={formData.password} placeholder='Enter Password' className='border-0 bg-primary  outline-none p-3 px-4 w-full'/>
+                <div className='flex items-center bg-hover rounded-xl px-3 mt-4'>
+                    <i className='fa fa-key'/><input type="password" autoComplete='off' name='password' defaultValue={formData.password} placeholder='Enter Password' className='border-0 bg-hover  outline-none p-3 px-4 w-full'/>
                 </div>
                 {errorMessage && <div className='italic mt-4 text-sm text-red-500 text-center'>{errorMessage}</div>}
                 <input type="submit"  className='border-0 outline-none cursor-pointer p-2 bg-secondary text-lg px-4 rounded-full mt-4 w-full' value="Sign In"/>

@@ -37,3 +37,27 @@ export const getSingers = async () => {
         return err.response?.data?.message || err.message
     }
 }
+
+export const updateProfile = async (obj, user) => {
+    try {
+        const {status, data}= await api.patch(`/users/update/${user}`, obj)
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}
+
+export const updatePassword = async (obj, user) => {
+    try {
+        const {status, data}= await api.patch(`/users/password/update/${user}`, obj)
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}

@@ -14,6 +14,9 @@ const recentSlice = createSlice({
                 const item = state.list.findIndex(item => item.trackId == action.payload.list.trackId)
                 state.list[item].last_played = getTime()
             } else {
+                if (state.list.length == 20) {
+                    state.list.pop()
+                }
                 state.list = [action.payload.list, ...state.list]
             }
         },

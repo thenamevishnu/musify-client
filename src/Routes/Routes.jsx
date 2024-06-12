@@ -5,6 +5,8 @@ import LoginPage from '../Pages/LoginPage'
 import SignupPage from '../Pages/SignupPage'
 import { Auth } from '../ProtectedRoutes/Auth'
 import AboutPage from '../Pages/AboutPage'
+import ProfilePage from '../Pages/ProfilePage'
+import SettingsPage from '../Pages/SettingsPage'
 
 const Router = () => {
     return (
@@ -17,6 +19,8 @@ const Router = () => {
                     <Route path='login' element={<Auth route={"login"}><LoginPage /></Auth>} />
                     
                     <Route path='about' Component={AboutPage} />
+                    <Route path='profile' element={<Auth><ProfilePage /></Auth>} />
+                    <Route path='settings' element={<Auth><SettingsPage/></Auth>} />
                 
                 </Route>
             </Routes>

@@ -8,6 +8,7 @@ import { getTrack } from '../../Services/Track'
 import toast from 'react-hot-toast'
 import RecentlyPlayed from './RecentlyPlayed'
 import { trackUpdate } from '../../Redux/trackSlice'
+import Loading from '../Loading'
 
 const Main = () => {
 
@@ -30,6 +31,7 @@ const Main = () => {
     return (
         <Fragment>
             <div className='mt-20 px-2 md:px-10 pb-20'>
+                {/* <Loading /> */}
                 <div className='flex flex-col'>
                     <div>
                         <h2 className='text-white text-2xl mb-4'>TRENDING</h2>
