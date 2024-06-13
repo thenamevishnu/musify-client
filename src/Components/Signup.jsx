@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { userSignup } from '../Services/user'
 import { setToken } from '../Utils/localdb'
@@ -120,4 +120,4 @@ const Signup = () => {
     )
 }
 
-export default Signup
+export default memo(Signup)

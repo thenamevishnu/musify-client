@@ -13,6 +13,7 @@ const PlayMusic = () => {
     const audioRef = useRef(null)
     const { isPlaying, setPlaying, isMusicUp, setMusicUp } = usePlay()
     const { track } = useSelector(state => state.tracks)
+    const { trackId } = useSelector(state => state.playing)
 
     const dispatch = useDispatch()
 
@@ -43,7 +44,7 @@ const PlayMusic = () => {
                 ref.audio?.current?.removeEventListener("ended", () => handleNextPrev(track.nextTrack))
             }
         }
-    }, [])
+    }, [trackId])
     
     useEffect(() => {
         if (audioRef.current) {

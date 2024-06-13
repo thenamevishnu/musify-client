@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { updatePassword, updateProfile } from '../../Services/user'
 import { uploadToCloud } from '../../Utils/cloudinary'
@@ -114,7 +114,7 @@ const Profile = () => {
     
     return (
         <div className='mt-20 text-white flex px-2 md:px-10 justify-center'>
-            <div className='w-full md:w-[600px] p-3'>
+            <div className='w-full p-3'>
                 <label htmlFor='picture' className='flex overflow-hidden cursor-pointer items-center gap-3 justify-center rounded-xl'>
                     <div className='w-36 relative group'>
                         <img alt='user avatar' src={(imageFile && URL.createObjectURL(imageFile)) || profile.picture || `./user-avatar.jpg`} className='w-36 rounded-full object-fill aspect-square' />   
@@ -126,54 +126,65 @@ const Profile = () => {
                 </label>
                 <p className='text-center text-xl'>{profile.name}</p>
                 <p className='text-center italic'>@{ profile.username }</p>
-                <h2 className='text-center text-xl text-white mb-3 mt-10'>Profile Informations</h2>
-                <form className='w-full' onSubmit={handleProfileUpdate} onChange={e => handleUserInfoForm(e.target.name, e.target.value)}>
-                    <div className='bg-hover flex items-center gap-3 rounded-xl'>
-                        <i className='fa fa-user ps-4'/>
-                        <input defaultValue={profile.name} type={editable ? `text` : `button`} className='w-full bg-hover text-start cursor-pointer ps-0 p-3 outline-none rounded-r-xl' name='name' placeholder='Name'/>
-                    </div>
-                    <div className='bg-hover flex items-center gap-3 rounded-xl mt-3'>
-                        <i className='fa fa-at ps-4'/>
-                        <input defaultValue={profile.username} type={editable ? `text` : `button`} className='w-full bg-hover text-start ps-0 p-3 cursor-pointer outline-none rounded-r-xl' name="username" placeholder='Username'/>
-                    </div>
-                    <div className='bg-hover flex items-center gap-3 rounded-xl mt-3'>
-                        <i className='fa fa-envelope ps-4'/>
-                        <input defaultValue={profile.email} type={editable ? `text` : `button`} className='w-full bg-hover text-start ps-0 p-3 outline-none cursor-pointer rounded-r-xl' name="email" placeholder='Email'/>
-                    </div>
-                    <div>
-                        {errorMessage.profile && <div className='mt-2 text-red-500 text-center'>{errorMessage.profile}</div>}
+               
+                <div className='mt-10 flex w-full gap-5 flex-col sm:flex-row max-w-[1000px] mx-auto'>
+
+                    <div className='w-full'>
+                         <h2 className='text-center text-xl text-white mb-3'>Profile Informations</h2>
+                        <form className='w-full' onSubmit={handleProfileUpdate} onChange={e => handleUserInfoForm(e.target.name, e.target.value)}>
+                            <div className='bg-hover flex items-center gap-3 rounded-xl'>
+                                <i className='fa fa-user ps-4'/>
+                                <input defaultValue={profile.name} type={editable ? `text` : `button`} className='w-full bg-hover text-start cursor-pointer ps-0 p-3 outline-none rounded-r-xl' name='name' placeholder='Name'/>
+                            </div>
+                            <div className='bg-hover flex items-center gap-3 rounded-xl mt-3'>
+                                <i className='fa fa-at ps-4'/>
+                                <input defaultValue={profile.username} type={editable ? `text` : `button`} className='w-full bg-hover text-start ps-0 p-3 cursor-pointer outline-none rounded-r-xl' name="username" placeholder='Username'/>
+                            </div>
+                            <div className='bg-hover flex items-center gap-3 rounded-xl mt-3'>
+                                <i className='fa fa-envelope ps-4'/>
+                                <input defaultValue={profile.email} type={editable ? `text` : `button`} className='w-full bg-hover text-start ps-0 p-3 outline-none cursor-pointer rounded-r-xl' name="email" placeholder='Email'/>
+                            </div>
+                            <div>
+                                {errorMessage.profile && <div className='mt-2 text-red-500 text-center'>{errorMessage.profile}</div>}
+                                {
+                                    editable &&
+                                        <button type='submit' className='w-full flex p-2 bg-secondary text-white justify-center rounded-lg items-center gap-2 mt-5'><i className='fa fa-save'/>Save Changes</button>
+                                }
+                            </div>
+                        </form>
                         {
-                            editable &&
-                                <button type='submit' className='w-full flex p-2 bg-secondary text-white justify-center rounded-lg items-center gap-2 mt-5'><i className='fa fa-save'/>Save Changes</button>
+                            !editable &&
+                                <button type='button' className='w-full flex p-2 bg-secondary text-white justify-center rounded-lg items-center gap-2 mt-5' onClick={() => setEditable(true)}><i className='fa fa-pen'/> Edit Profile</button>
                         }
                     </div>
-                </form>
-                {
-                    !editable &&
-                        <button type='button' className='w-full flex p-2 bg-secondary text-white justify-center rounded-lg items-center gap-2 mt-5' onClick={() => setEditable(true)}><i className='fa fa-pen'/> Edit Profile</button>
-                }
-                <h2 className='text-center text-xl text-white mb-3 mt-10'>Change Password</h2>
-                <form className='w-full' onSubmit={handlePasswordChange} onChange={e => handlePasswordForm(e.target.name, e.target.value)}>
-                    <div className='bg-hover flex items-center gap-3 rounded-xl'>
-                        <i className='fa fa-key ps-4'/>
-                        <input type="text" className='w-full bg-hover ps-0 p-3 outline-none rounded-r-xl' name='currentPassword' placeholder='Current Password'/>
+
+                    <div className='w-full'>
+                        <h2 className='text-center text-xl text-white mb-3'>Change Password</h2>
+                        <form className='w-full' onSubmit={handlePasswordChange} onChange={e => handlePasswordForm(e.target.name, e.target.value)}>
+                            <div className='bg-hover flex items-center gap-3 rounded-xl'>
+                                <i className='fa fa-key ps-4'/>
+                                <input type="text" className='w-full bg-hover ps-0 p-3 outline-none rounded-r-xl' name='currentPassword' placeholder='Current Password'/>
+                            </div>
+                            <div className='bg-hover flex items-center gap-3 rounded-xl mt-3'>
+                                <i className='fa fa-lock ps-4'/>
+                                <input type="text" className='w-full bg-hover ps-0 p-3 outline-none rounded-r-xl' name="newPassword" placeholder='New Password'/>
+                            </div>
+                            <div className='bg-hover flex items-center gap-3 rounded-xl mt-3'>
+                                <i className='fa fa-lock ps-4'/>
+                                <input type="text" className='w-full bg-hover ps-0 p-3 outline-none rounded-r-xl' name="confirmPassword" placeholder='Confirm Password'/>
+                            </div>
+                            {errorMessage.password && <div className='mt-2 text-red-500 text-center'>{errorMessage.password}</div>}
+                            <div>
+                                <button type='submit' className='w-full flex p-2 bg-secondary text-white justify-center rounded-lg items-center gap-2 mt-5'><i className='fa fa-pen'/>Change Password</button>
+                            </div>
+                        </form>
                     </div>
-                    <div className='bg-hover flex items-center gap-3 rounded-xl mt-3'>
-                        <i className='fa fa-lock ps-4'/>
-                        <input type="text" className='w-full bg-hover ps-0 p-3 outline-none rounded-r-xl' name="newPassword" placeholder='New Password'/>
-                    </div>
-                    <div className='bg-hover flex items-center gap-3 rounded-xl mt-3'>
-                        <i className='fa fa-lock ps-4'/>
-                        <input type="text" className='w-full bg-hover ps-0 p-3 outline-none rounded-r-xl' name="confirmPassword" placeholder='Confirm Password'/>
-                    </div>
-                    {errorMessage.password && <div className='mt-2 text-red-500 text-center'>{errorMessage.password}</div>}
-                    <div>
-                        <button type='submit' className='w-full flex p-2 bg-secondary text-white justify-center rounded-lg items-center gap-2 mt-5'><i className='fa fa-pen'/>Change Password</button>
-                    </div>
-                </form>
+
+                </div>
+            
             </div>
         </div>
     )
 }
 
-export default Profile
+export default memo(Profile)

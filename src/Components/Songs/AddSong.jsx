@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { uploadToCloud } from '../../Utils/cloudinary'
 import { useSelector } from "react-redux"
 import { uploadTrack } from '../../Services/Track'
@@ -105,4 +105,4 @@ const AddSong = ({ isModalOpen, setModalOpen }) => {
     )
 }
 
-export default AddSong
+export default memo(AddSong)

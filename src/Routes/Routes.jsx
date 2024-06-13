@@ -7,6 +7,9 @@ import { Auth } from '../ProtectedRoutes/Auth'
 import AboutPage from '../Pages/AboutPage'
 import ProfilePage from '../Pages/ProfilePage'
 import SettingsPage from '../Pages/SettingsPage'
+import MyTracksPage from '../Pages/MyTracksPage'
+import { OnlyForSingers } from '../ProtectedRoutes/Roles'
+import PageNotFound from '../Pages/PageNotFound'
 
 const Router = () => {
     return (
@@ -20,9 +23,19 @@ const Router = () => {
                     
                     <Route path='about' Component={AboutPage} />
                     <Route path='profile' element={<Auth><ProfilePage /></Auth>} />
-                    <Route path='settings' element={<Auth><SettingsPage/></Auth>} />
+                    <Route path='settings' element={<Auth><SettingsPage /></Auth>} />
+                    
+                    <Route path='my-tracks' element={
+                        <Auth>
+                            <OnlyForSingers>
+                                <MyTracksPage />
+                            </OnlyForSingers>
+                        </Auth>
+                    } />
                 
                 </Route>
+
+                <Route path='*' Component={PageNotFound} />
             </Routes>
         </BrowserRouter>
     )

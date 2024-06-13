@@ -51,3 +51,15 @@ export const getTrack = async (trackId, user_id) => {
         return err.response?.data?.message || err.message
     }
 }
+
+export const getMyTracks = async (user_id) => {
+    try {
+        const { status, data } = await api.get(`/tracks/my-tracks/${user_id}`)
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}

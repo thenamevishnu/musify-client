@@ -9,7 +9,7 @@ export default {
             colors: {
                 primary: "#303234",
                 hover: "#404346",
-                secondary: "crimson"
+                secondary: "#7256d7"
             }
         },
     },

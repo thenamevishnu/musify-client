@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 const Settings = () => {
     return (
@@ -8,4 +8,4 @@ const Settings = () => {
     )
 }
 
-export default Settings
+export default memo(Settings)

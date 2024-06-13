@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, memo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeToken } from '../Utils/localdb'
 import { reduxInitialStateUser, updateUser } from '../Redux/userSlice'
@@ -52,8 +52,13 @@ const NavBar = () => {
                                 <div className='px-4 mt-10 flex flex-col gap-3'>
                                      <div onClick={() => navigate("/")} className='p-2 bg-white text-black px-5 rounded-xl cursor-pointer hover:bg-secondary hover:text-white transition-all duration-100 ease-linear'><i className='fa fa-user mr-3' />Home</div>
                                     <div onClick={() => navigate("/profile")} className='p-2 bg-white text-black px-5 rounded-xl cursor-pointer hover:bg-secondary hover:text-white transition-all duration-100 ease-linear'><i className='fa fa-user mr-3' />Update Profile</div>
-                                    <div className='p-2 bg-white text-black px-5 rounded-xl cursor-pointer hover:bg-secondary hover:text-white transition-all duration-100 ease-linear'><i className='fa fa-gear mr-3' />Settings</div>
+                                    <div onClick={() => navigate("/settings")} className='p-2 bg-white text-black px-5 rounded-xl cursor-pointer hover:bg-secondary hover:text-white transition-all duration-100 ease-linear'><i className='fa fa-gear mr-3' />Settings</div>
                                     <div onClick={() => navigate("/about")} className='p-2 bg-white text-black px-5 rounded-xl cursor-pointer hover:bg-secondary hover:text-white transition-all duration-100 ease-linear'><i className='fa fa-circle-info mr-3' />About Us</div>
+                                     {
+                                        account_type == "singer" && <div onClick={() => {
+                                           navigate("/my-tracks")
+                                        }} className='p-2 bg-white text-black px-5 rounded-xl cursor-pointer hover:bg-secondary hover:text-white transition-all duration-100 ease-linear'><i className='fa fa-upload mr-3' />My Tracks</div>
+                                    }
                                     {
                                         account_type == "singer" && <div onClick={() => {
                                             setModalOpen(true)
@@ -78,4 +83,4 @@ const NavBar = () => {
     )
 }
 
-export default NavBar
+export default memo(NavBar)
