@@ -1,11 +1,11 @@
-import millify from 'millify'
 import React, { Fragment, memo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import TrackDeleteAlert from '../Modals/TrackDeleteAlert'
 
-const TrackCard = ({ item, addToRecentPlayed, trending, isMyList }) => {
+const TrackCard = ({ item, addToRecentPlayed, trending, isMyList, setTracks }) => {
 
     const { trackId } = useSelector(state => state.playing)
+    const { id: user_id } = useSelector(state => state.users)
     const [openedModal, setOpenedModal] = useState(false)
     
     const handleDeleteTrack = () => {
@@ -14,7 +14,7 @@ const TrackCard = ({ item, addToRecentPlayed, trending, isMyList }) => {
 
     return (
         <Fragment>
-            <TrackDeleteAlert setOpenedModal={setOpenedModal} openedModal={ openedModal } />
+            <TrackDeleteAlert user_id={user_id} setTracks={setTracks} setOpenedModal={setOpenedModal} openedModal={ openedModal } />
             <div className={`group text-center hover:bg-hover p-2 text-white cursor-pointer overflow-hidden w-52 rounded-2xl inline-block mx-1 transition-all duration-150 ease-linear`}>
                 <div className='overflow-hidden rounded-2xl relative' onClick={() => addToRecentPlayed(item)}>
                     <div className='absolute flex-col top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] pointer-events-none opacity-0 group-hover:opacity-100 z-[1]  transition-all ease-linear duration-150 text-5xl flex justify-center items-center rounded-full text-white'>

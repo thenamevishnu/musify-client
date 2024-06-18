@@ -84,6 +84,11 @@ const AddSong = ({ isModalOpen, setModalOpen }) => {
                 <div className='flex items-baseline bg-primary rounded-xl px-3 mt-4'>
                     <i className='fa fa-list'/><textarea type="text"  autoComplete='off' value={formData.description} onChange={e=>setFormData({...formData, [e.target.name]: e.target.value})} name='description' placeholder='Description about which film, singer, writter, etc.' className='border-0 bg-primary resize-none h-48  outline-none p-3 px-4 w-full'/>
                 </div>
+                {
+                    formData.thumb?.name && <div className='mt-3 flex justify-center'>
+                        <img src={URL.createObjectURL(formData.thumb)} alt={formData.thumb.name} className='aspect-square w-40 object-cover rounded-xl'/>
+                    </div>
+                }
                 <label htmlFor='thumb-file' className='flex items-center gap-3 text-gray-400 cursor-pointer bg-primary rounded-xl px-3 mt-4 p-3'>
                     <i className='fa fa-upload'/><input id='thumb-file' type="file" accept='image/jpg, image/png, image/jpeg' name='thumb' onChange={handleThumbChange} className='border-0 hidden bg-primary  outline-none p-3 px-4 w-full'/>
                     <div className='overflow-x-hidden whitespace-nowrap'>{ formData.thumb ? formData.thumb.name : `Select a thumnail for this song`}</div>

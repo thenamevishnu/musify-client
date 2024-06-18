@@ -22,9 +22,12 @@ const recentSlice = createSlice({
         },
         removeList: (state, action) => {
             state.list = state.list.filter(item => item.trackId != action.payload.trackId)
+        },
+        clearList: (state, action) => {
+            state.list = []
         }
     }
 })
 
-export const { addList, removeList } = recentSlice.actions
+export const { addList, removeList, clearList } = recentSlice.actions
 export default recentSlice.reducer

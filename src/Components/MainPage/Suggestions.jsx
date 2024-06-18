@@ -7,12 +7,15 @@ import { playingUpdate } from '../../Redux/playingSlice'
 import { getTime } from '../../Utils/helper'
 import { usePlay } from '../../context'
 import TrackCard from '../Cards/TrackCard'
+import Loading from '../Loading'
+import ListNotFound from '../Cards/ListNotFound'
 
 const Suggestions = () => {
 
     const [recommend, setRecommend] = useState([])
     const { tags, trackId } = useSelector(state => state.playing)
     const { setPlaying } = usePlay()
+    const [isLoading, setIsLoading] = useState(true)
 
     const dispatch = useDispatch()
 
@@ -20,6 +23,7 @@ const Suggestions = () => {
         const res = await getRecommendations(tags)
         if (!res.recommended) return toast.error(res)
         setRecommend(res.recommended)
+        setIsLoading(false)
     }, [trackId])
 
     useEffect(() => {
@@ -35,6 +39,18 @@ const Suggestions = () => {
 
     return (
         <Fragment>
+            {
+                isLoading && <div className='inline-block'>
+                    <Loading className='w-52 h-52'/>
+                </div>
+            }
+            {
+                (!isLoading && recommend.length == 0) && <ListNotFound className='h-52 rounded-2xl'>
+                    <div className='flex justify-center items-center h-full text-2xl text-white'>
+                        There are no recommendations found
+                    </div>
+                </ListNotFound>
+            }
             {
                 recommend.map((item, index) => {
                     return (

@@ -44,7 +44,7 @@ const MyTracks = () => {
                     trackList.map((item, index) => {
                         return (
                             <Fragment key={index}>
-                                <TrackCard item={item} addToRecentPlayed={addToRecentPlayed} trending={0} isMyList/>
+                                <TrackCard setTracks={setTracks} item={item} addToRecentPlayed={addToRecentPlayed} trending={0} isMyList/>
                             </Fragment>
                         )
                     })

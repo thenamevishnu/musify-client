@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from 'react'
+import React, { Fragment, memo, useEffect, useRef } from 'react'
 import NowPlaying from './NowPlaying'
 import AudioPlayer from 'react-h5-audio-player';
 import { usePlay } from '../../context';
@@ -72,8 +72,12 @@ const PlayMusic = () => {
 
     return (
         <div className='w-screen fixed px-4 md:px-10 bottom-3 flex justify-center flex-col items-center z-[2]'>
-            <NowPlaying forwardTen={forwardTen} backwordTen={backwordTen} isMusicUp={isMusicUp} track={track} audioRef={audioRef} />
-            <AudioPlayer ref={audioRef} autoPlay src={track.track} className='bg-[#222] hidden' />
+            {
+                trackId && <Fragment>
+                    <NowPlaying forwardTen={forwardTen} backwordTen={backwordTen} isMusicUp={isMusicUp} track={track} audioRef={audioRef} />
+                    <AudioPlayer ref={audioRef} autoPlay src={track.track} className='bg-[#222] hidden' />
+                </Fragment>
+            }
             <div className=' bg-primary shadow shadow-black rounded-xl relative px-5 h-14'>
                 <div className='flex gap-2 justify-center items-center h-14'>
                     <div onClick={() => setMusicUp(v => !v)} className='bg-secondary cursor-pointer text-white w-10 h-10 flex justify-center items-center rounded-full'>

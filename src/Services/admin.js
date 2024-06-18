@@ -1,35 +1,10 @@
-import { api } from "../axios"
+import { adminApi } from "../axios"
 
-export const uploadTrack = async (formData) => {
-    try {
-        const {status, data}= await api.post("/tracks/upload", formData)
-        if (status == 201) {
-            return data
-        }
-        throw new Error(data.message)
-    } catch (err) {
-        return err.response?.data?.message || err.message
-    }
-}
 
-export const getTrendings = async () => {
+export const adminLogin = async (formData) => {
     try {
-        const {status, data}= await api.get("/tracks/trendings")
-        if (status == 200) {
-            return data
-        }
-        throw new Error(data.message)
-    } catch (err) {
-        return err.response?.data?.message || err.message
-    }
-}
-
-export const getRecommendations = async (tags) => {
-    try {
-        const { status, data } = await api.get("/tracks/recommend", {
-            params: {
-                tags: tags.join(",")
-            }
+        const { status, data } = await adminApi.get(`/admins/login`, {
+            params: formData
         })
         if (status == 200) {
             return data
@@ -40,9 +15,9 @@ export const getRecommendations = async (tags) => {
     }
 }
 
-export const getTrack = async (trackId, user_id) => {
+export const getStat = async () => {
     try {
-        const { status, data } = await api.get(`/tracks/track/${trackId}/${user_id}`)
+        const { status, data } = await adminApi.get(`/admins/stat`)
         if (status == 200) {
             return data
         }
@@ -52,9 +27,9 @@ export const getTrack = async (trackId, user_id) => {
     }
 }
 
-export const getMyTracks = async (user_id) => {
+export const usersList = async () => {
     try {
-        const { status, data } = await api.get(`/tracks/my-tracks/${user_id}`)
+        const { status, data } = await adminApi.get(`/admins/users`)
         if (status == 200) {
             return data
         }
@@ -64,9 +39,33 @@ export const getMyTracks = async (user_id) => {
     }
 }
 
-export const deleteTrack = async (user_id, track_id) => {
+export const updateBlock = async (userid) => {
     try {
-        const { status, data } = await api.delete(`/tracks/delete/${user_id}/${track_id}`)
+        const { status, data } = await adminApi.patch(`/admins/block-unblock`, {userid})
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}
+
+export const tracksList = async () => {
+    try {
+        const { status, data } = await adminApi.get(`/admins/tracks`)
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}
+
+export const AdminDeleteTrack = async (user_id, track_id) => {
+    try {
+        const { status, data } = await adminApi.delete(`/admins/delete/track/${user_id}/${track_id}`)
         if (status == 200) {
             return data
         }

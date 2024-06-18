@@ -5,6 +5,7 @@ import playingSlice from "./playingSlice"
 import { configureStore } from "@reduxjs/toolkit"
 import recentSlice from "./recentSlice"
 import trackSlice from "./trackSlice"
+import adminSlice from "./adminSlice"
 
 const persistConfig1 = {
     key: "root1",
@@ -26,17 +27,24 @@ const persistConfig4 = {
     storage
 }
 
+const persistConfig5 = {
+    key: "root5",
+    storage
+}
+
 const persistedUserReducer = persistReducer(persistConfig1, userSlice)
 const persistedPlayReducer = persistReducer(persistConfig2, playingSlice)
 const persistedRecentReducer = persistReducer(persistConfig3, recentSlice)
 const persistedTrackReducer = persistReducer(persistConfig4, trackSlice)
+const persistedAdminReducer = persistReducer(persistConfig4, adminSlice)
 
 export const Store = configureStore({   
     reducer: {
         users: persistedUserReducer,
         playing: persistedPlayReducer,
         recent: persistedRecentReducer,
-        tracks: persistedTrackReducer
+        tracks: persistedTrackReducer,
+        admin: persistedAdminReducer
     },
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware({

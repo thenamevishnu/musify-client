@@ -7,6 +7,8 @@ import { playingUpdate } from '../../Redux/playingSlice'
 import { getTime } from '../../Utils/helper'
 import { usePlay } from '../../context'
 import TrackCard from '../Cards/TrackCard'
+import Loading from '../Loading'
+import ListNotFound from '../Cards/ListNotFound'
 
 const Trending = () => {
 
@@ -14,6 +16,7 @@ const Trending = () => {
     const { setPlaying } = usePlay()
     const { id: user_id } = useSelector(state => state.users)
     const { trackId } = useSelector(state => state.playing)
+    const [isLoading, setIsLoading] = useState(true)
 
     const dispatch = useDispatch()
 
@@ -21,6 +24,7 @@ const Trending = () => {
         const res = await getTrendings()
         if (!res.trendings) return toast.error(res)
         setTrendings(res.trendings)
+        setIsLoading(false)
     }, [])
 
     useEffect(() => {
@@ -46,6 +50,18 @@ const Trending = () => {
 
     return (
         <Fragment>
+            {
+                isLoading && <div className='inline-block'>
+                    <Loading className='w-52 h-52'/>
+                </div>
+            }
+            {
+                (!isLoading && trendings.length == 0) && <ListNotFound className='h-52 rounded-2xl'>
+                    <div className='flex justify-center items-center h-full text-2xl text-white'>
+                        There are no trendings found
+                    </div>
+                </ListNotFound>
+            }
             {
                 trendings.map((item, index) => {
                     return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import MainPage from '../Pages/MainPage'
 import LoginPage from '../Pages/LoginPage'
 import SignupPage from '../Pages/SignupPage'
@@ -10,6 +10,11 @@ import SettingsPage from '../Pages/SettingsPage'
 import MyTracksPage from '../Pages/MyTracksPage'
 import { OnlyForSingers } from '../ProtectedRoutes/Roles'
 import PageNotFound from '../Pages/PageNotFound'
+import AdminHomePage from '../Pages/Admin/AdminHomePage'
+import AdminAuth from '../ProtectedRoutes/AdminAuth'
+import AdminLoginPage from '../Pages/Admin/AdminLoginPage'
+import AdminUserManagePage from '../Pages/Admin/AdminUserManagePage'
+import AdminTrackManagePage from '../Pages/Admin/AdminTrackManagePage'
 
 const Router = () => {
     return (
@@ -33,6 +38,40 @@ const Router = () => {
                         </Auth>
                     } />
                 
+                </Route>
+
+                <Route path='admin'>
+
+                    <Route path='' element={ <Navigate to={`/admin/${ import.meta.env.VITE_ADMIN_HOME }`} /> } />
+
+                    <Route path={ import.meta.env.VITE_ADMIN_HOME } element={
+                        <AdminAuth>
+                            <AdminHomePage />
+                        </AdminAuth>
+                    } />
+
+                    <Route path='login' element={
+                        <AdminAuth login>
+                            <AdminLoginPage />
+                        </AdminAuth>
+                    } />
+
+                    <Route path='manage'>
+
+                        <Route path='users' element={
+                            <AdminAuth>
+                                <AdminUserManagePage />
+                            </AdminAuth>
+                        } />
+
+                        <Route path='tracks' element={
+                            <AdminAuth>
+                                <AdminTrackManagePage />
+                            </AdminAuth>
+                        } />
+
+                    </Route>
+
                 </Route>
 
                 <Route path='*' Component={PageNotFound} />

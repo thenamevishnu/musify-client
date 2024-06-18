@@ -8,7 +8,7 @@ import { getTrack } from '../../Services/Track'
 import toast from 'react-hot-toast'
 import RecentlyPlayed from './RecentlyPlayed'
 import { trackUpdate } from '../../Redux/trackSlice'
-import Loading from '../Loading'
+import { clearList } from '../../Redux/recentSlice'
 
 const Main = () => {
 
@@ -16,7 +16,12 @@ const Main = () => {
     const { id: user_id } = useSelector(state => state.users)
     const { track } = useSelector(state => state.tracks)
 
+
     const dispatch = useDispatch()
+
+    const clearMyRecentPlays = () => {
+        dispatch(clearList())
+    }
     
     const fetchTrack = useCallback(async () => {
         const res = await getTrack(trackId, user_id)
@@ -31,7 +36,6 @@ const Main = () => {
     return (
         <Fragment>
             <div className='mt-20 px-2 md:px-10 pb-20'>
-                {/* <Loading /> */}
                 <div className='flex flex-col'>
                     <div>
                         <h2 className='text-white text-2xl mb-4'>TRENDING</h2>
@@ -42,7 +46,7 @@ const Main = () => {
                 </div>
                 <div className='flex flex-col mt-10'>
                     <div>
-                        <h2 className='text-white text-2xl mb-4'>RECENT PLAYS</h2>
+                        <h2 className='text-white flex items-center text-2xl mb-4 gap-2'>RECENT PLAYS <button onClick={clearMyRecentPlays} className='text-sm bg-secondary p-1 rounded-md' ><i className='fas fa-trash'/> Clear</button></h2>
                     </div>
                     <div className='overflow-x-scroll whitespace-nowrap'>
                         <RecentlyPlayed />
