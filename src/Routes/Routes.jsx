@@ -15,6 +15,8 @@ import AdminAuth from '../ProtectedRoutes/AdminAuth'
 import AdminLoginPage from '../Pages/Admin/AdminLoginPage'
 import AdminUserManagePage from '../Pages/Admin/AdminUserManagePage'
 import AdminTrackManagePage from '../Pages/Admin/AdminTrackManagePage'
+import AdminRequestsPage from '../Pages/Admin/AdminRequestsPage'
+import AdminReportsPage from '../Pages/Admin/AdminReportsPage'
 
 const Router = () => {
     return (
@@ -56,6 +58,8 @@ const Router = () => {
                         </AdminAuth>
                     } />
 
+                    <Route path='report' Component={AdminReportsPage} />
+
                     <Route path='manage'>
 
                         <Route path='users' element={
@@ -67,6 +71,12 @@ const Router = () => {
                         <Route path='tracks' element={
                             <AdminAuth>
                                 <AdminTrackManagePage />
+                            </AdminAuth>
+                        } />
+
+                        <Route path='requests' element={
+                            <AdminAuth>
+                                <AdminRequestsPage />
                             </AdminAuth>
                         } />
 

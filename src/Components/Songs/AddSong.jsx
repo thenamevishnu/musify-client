@@ -70,7 +70,7 @@ const AddSong = ({ isModalOpen, setModalOpen }) => {
         }
         resetError()
         setClicked(false)
-        toast.success("Track added")
+        toast.success("Track added. Wait for approval!")
         return setModalOpen(false)
     }
 

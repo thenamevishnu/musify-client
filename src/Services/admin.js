@@ -74,3 +74,39 @@ export const AdminDeleteTrack = async (user_id, track_id) => {
         return err.response?.data?.message || err.message
     }
 }
+
+export const trackRequests = async () => {
+    try {
+        const { status, data } = await adminApi.get(`/admins/tracks/requests`)
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}
+
+export const approveTrack = async (track_id) => {
+    try {
+        const { status, data } = await adminApi.patch(`/admins/tracks/approve`, {track_id})
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}
+
+export const adminReports = async () => {
+    try {
+        const { status, data } = await adminApi.get(`/admins/reports`)
+        if (status == 200) {
+            return data
+        }
+        throw new Error(data.message)
+    } catch (err) {
+        return err.response?.data?.message || err.message
+    }
+}

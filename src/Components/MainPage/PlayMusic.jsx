@@ -67,14 +67,11 @@ const PlayMusic = () => {
         audioRef.current.audio.current.pause()
     }
 
-    const forwardTen = () => audioRef.current.audio.current.currentTime += 10
-    const backwordTen = () => audioRef.current.audio.current.currentTime -= 10
-
     return (
         <div className='w-screen fixed px-4 md:px-10 bottom-3 flex justify-center flex-col items-center z-[2]'>
             {
                 trackId && <Fragment>
-                    <NowPlaying forwardTen={forwardTen} backwordTen={backwordTen} isMusicUp={isMusicUp} track={track} audioRef={audioRef} />
+                    <NowPlaying isMusicUp={isMusicUp} track={track} audioRef={audioRef} />
                     <AudioPlayer ref={audioRef} autoPlay src={track.track} className='bg-[#222] hidden' />
                 </Fragment>
             }
@@ -86,7 +83,7 @@ const PlayMusic = () => {
                     <div onClick={() => handleNextPrev(track.previousTrack)} className='bg-secondary cursor-pointer text-white w-10 h-10 flex justify-center items-center rounded-full'>
                         <i className='fa fa-angles-left text-xl'/>
                     </div>
-                    <div onClick={handlePlay} className='bg-secondary cursor-pointer text-white w-10 h-10 flex justify-center items-center rounded-full'>
+                    <div onClick={() => trackId && handlePlay()} className='bg-secondary cursor-pointer text-white w-10 h-10 flex justify-center items-center rounded-full'>
                         <i className={`fa fa-${isPlaying ? `circle-pause`:`circle-play`} text-xl`} />
                     </div>
                     <div onClick={() => handleNextPrev(track.nextTrack)} className='bg-secondary cursor-pointer text-white w-10 h-10 flex justify-center items-center rounded-full'>

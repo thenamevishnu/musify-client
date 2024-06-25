@@ -25,7 +25,7 @@ const Main = () => {
     
     const fetchTrack = useCallback(async () => {
         const res = await getTrack(trackId, user_id)
-        if (!res.track) return toast.error(res)
+        if (!res.track) return;
         dispatch(trackUpdate({track: res.track}))
     }, [trackId])
 
